@@ -61,6 +61,12 @@ public class Report {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updated_at;
 
+    @Column(name = "attendance_at", nullable = true)
+    private String attendance_at;
+
+    @Column(name = "absence_at", nullable = true)
+    private String absence_at;
+
     public Integer getId() {
         return id;
     }
@@ -107,6 +113,22 @@ public class Report {
 
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
+    }
+
+    public String getAttendance_at() {
+        return attendance_at;
+    }
+
+    public void setAttendance_at(String attendance_at) {
+        this.attendance_at = attendance_at;
+    }
+
+    public String getAbsence_at() {
+        return absence_at;
+    }
+
+    public void setAbsence_at(String absence_at) {
+        this.absence_at = absence_at;
     }
 
     public Timestamp getUpdated_at() {
