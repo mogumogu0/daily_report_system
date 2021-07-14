@@ -11,7 +11,28 @@
                     <tbody>
                         <tr>
                             <th>氏名</th>
-                            <td><c:out value="${report.employee.name}" /></td>
+                            <td><c:out value="${report.employee.name}" />
+
+                            <form name="form1" method="post" action=<c:url value="/follow/create" />>
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <input type="hidden" name="_employee" value="${report.employee.id}" />
+                            <input type="hidden" name="_report_id" value="${report.id}" />
+                            <a href="#" onClick="document.form1.submit();">フォローする</a>
+                            </form>
+                            <%--
+                                            <p><a href="#" onclick="confirmDestroy();">この従業員情報を削除する</a></p>
+                <form method="POST" action="<c:url value="/follow/create?id=${report.employee.id}" />">
+                    <input type="hidden" name="_token" value="${_token}" />
+                    <input type="hidden" name="_employee" value="${report.employee.id}" />
+                </form>
+                <script>
+                    function confirmDestroy() {
+                        if(confirm("フォローしますか？")) {
+                            document.forms[1].submit();
+                        }
+                    }
+                </script>--%>
+                            <a href="<c:url value="/follow/create?id=${report.employee.id}" />">　　　フォローする</a></td>
                         </tr>
                         <tr>
                             <th>日付</th>
@@ -46,6 +67,10 @@
                         </tr>
                     </tbody>
                 </table>
+                <%--
+                <c:if test="${sessionScope.login_employee.id == report.employee.id}">
+                    <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この従業員をフォローする</a></p>
+                </c:if> --%>
 
                 <c:if test="${sessionScope.login_employee.id == report.employee.id}">
                     <p><a href="<c:url value="/reports/edit?id=${report.id}" />">この日報を編集する</a></p>
