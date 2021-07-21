@@ -37,15 +37,10 @@ public class FollowCreateServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             Follow r = new Follow();
-            System.out.println("test1");
 
             r.setFollow_id((Employee)request.getSession().getAttribute("login_employee"));
 
-            System.out.println(request.getParameter("_employee"));
-            System.out.println(request.getSession().getAttribute("login_employee"));
-
             r.setFollower_id(Integer.parseInt(request.getParameter("_employee")));
-            System.out.println("test3");
 
             em.getTransaction().begin();
             em.persist(r);

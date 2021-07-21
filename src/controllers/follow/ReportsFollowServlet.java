@@ -1,6 +1,7 @@
 package controllers.follow;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -48,36 +49,37 @@ public class ReportsFollowServlet extends HttpServlet {
         List<Follow> follows= em.createNamedQuery("getFollower",Follow.class)
                                 .setParameter("employee", login_employee)
                                 .getResultList();
-        System.out.println("aiuo"+login_employee.getId());
-        String where = "";
+
+        // 結果のリスト
+        List<Report> answer = new ArrayList<>();
+        List<Report> reports=new ArrayList<>();
         for (Follow follow : follows) {
-            System.out.println(follow.getFollower_id());
-            where += ",";
-            where += follow.getFollower_id();
+            reports = em.createNamedQuery("getFollowReports", Report.class)
+                    .setParameter("Ffollow", follow.getFollower_id())
+                    .getResultList();
+          answer.addAll(reports);
         }
-        if (where!=""){
-            where=where.substring(1);
-        }else{
-            where="0";
+        //2ページ目以降のページネーション
+        List<Report> PageAnswer=new ArrayList<>();
+
+        if(answer.size()>15) {
+            int PageCount=15;
+            if(PageCount*(page-1)+PageCount<=answer.size()-1){
+                PageAnswer=answer.subList(PageCount*(page-1),PageCount*(page-1)+PageCount);
+            }else{
+                PageAnswer=answer.subList(PageCount*(page-1),answer.size());
+            }
         }
-        System.out.println("-------------------------------------------------------------");
-        System.out.println(where);
 
-        List<Report> reports = em.createNamedQuery("getFollowReports", Report.class)
-                .setParameter("where", where)
-                .setFirstResult(15 * (page - 1))
-                .setMaxResults(15)
-                .getResultList();
-
-        long reports_count = (long)em.createNamedQuery("getFollowReportsCount", Long.class)
-                   .setParameter("where", where)
-                   .getSingleResult();
+        //データの数を1ページ15件にする
         em.close();
+        if(answer.size()>15){
+            request.setAttribute("reports", PageAnswer);
+        }else{
+            request.setAttribute("reports", answer);
+        }
 
-
-        request.setAttribute("reports", reports);
-        request.setAttribute("reports_count", reports_count);
-        request.setAttribute("page", page);
+        request.setAttribute("reports_count", answer.size());
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");

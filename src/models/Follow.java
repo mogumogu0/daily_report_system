@@ -19,7 +19,11 @@ import javax.persistence.Table;
     @NamedQuery(
         name = "getFollower",
         query = "SELECT f FROM Follow AS f WHERE f.follow_id = :employee ORDER BY f.id DESC"
-    )
+    ),
+    @NamedQuery(
+            name = "getFollowBoolean",
+            query = "SELECT f FROM Follow AS f WHERE f.follow_id = :employee AND f.follower_id=:follower_id ORDER BY f.id DESC"
+        )
 })
 @Entity
 public class Follow {

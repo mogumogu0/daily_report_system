@@ -14,25 +14,21 @@
                             <td><c:out value="${report.employee.name}" />
 
                             <form name="form1" method="post" action=<c:url value="/follow/create" />>
+
                             <input type="hidden" name="_token" value="${_token}" />
                             <input type="hidden" name="_employee" value="${report.employee.id}" />
                             <input type="hidden" name="_report_id" value="${report.id}" />
-                            <a href="#" onClick="document.form1.submit();">フォローする</a>
                             </form>
-                            <%--
-                                            <p><a href="#" onclick="confirmDestroy();">この従業員情報を削除する</a></p>
-                <form method="POST" action="<c:url value="/follow/create?id=${report.employee.id}" />">
-                    <input type="hidden" name="_token" value="${_token}" />
-                    <input type="hidden" name="_employee" value="${report.employee.id}" />
-                </form>
-                <script>
-                    function confirmDestroy() {
-                        if(confirm("フォローしますか？")) {
-                            document.forms[1].submit();
-                        }
-                    }
-                </script>--%>
-                            <a href="<c:url value="/follow/create?id=${report.employee.id}" />">　　　フォローする</a></td>
+                            <form name="form2" method="post" action=<c:url value="/follow/destroy" />>
+                            <input type="hidden" name="_token" value="${_token}" />
+                            <input type="hidden" name="_follow" value="${iFollow}" />
+                            </form>
+                            <c:if test="${iFollow!=0}" >
+                            <a href="#" onClick="document.form2.submit();">フォロー解除</a>
+                            </c:if>
+                            <c:if test="${iFollow==0}" >
+                            <a href="#" onClick="document.form1.submit();">フォローする</a>
+                            </c:if>
                         </tr>
                         <tr>
                             <th>日付</th>
